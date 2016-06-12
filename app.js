@@ -25,6 +25,30 @@ var form = document.querySelector('form');
 You'll probably find this function useful...
  */  
 submit.onclick = function () {
+    var validationSettings = {
+        "Password must be at least 16 characters": function(fieldValue){
+            return fieldValue.length < 16;
+        },
+        "Password must less than 100 characters": function(fieldValue){
+            return fieldValue.length > 100;
+        },
+        "One of the required symbols is missing" : function(fieldValue){
+            return !fieldValue.match(/[\!\@\#\$\%\^\&\*]/g);
+        },
+        "Password must contain a number" : function(fieldValue){
+            return !fieldValue.match(/\d/g);
+        },
+        "A lowercase letter is required" : function(fieldValue){
+            return !fieldValue.match(/[a-z]/g);
+        },
+        "An uppercase letter is required" : function(fieldValue){
+            return !fieldValue.match(/[A-Z]/g);
+        },
+        "Password contains illegal character" : function(fieldValue){
+            return fieldValue.match(/[^A-z0-9\!\@\#\$\%\^\&\*]/g);
+        }
+    };
+    
     var customValidityMessage = '';
     if(firstPasswordInput.value !== secondPasswordInput.value){
         customValidityMessage = "Passwords must match";
@@ -33,35 +57,18 @@ submit.onclick = function () {
     var fields = [firstPasswordInput, secondPasswordInput];
 
     for(var i in fields){        
-        if(fields[i].value.length < 16){
-            customValidityMessage += "Password must be at least 16 characters" + "\n";
-        }
-
-        if(fields[i].value.length > 100){
-            customValidityMessage += "Password must less than 100 characters" + "\n";
-        }
-
-        if(!fields[i].value.match(/[\!\@\#\$\%\^\&\*]/g)){
-            customValidityMessage += "One of the required symbols is missing" + "\n";
-        }
-
-        if(!fields[i].value.match(/\d/g)){
-            customValidityMessage += "Password must contain a number" + "\n";
-        }
-
-        if(!fields[i].value.match(/[a-z]/g)){
-            customValidityMessage += "A lowercase letter is required" + "\n";
-        }
-
-        if(!fields[i].value.match(/[A-Z]/g)){
-            customValidityMessage += "An uppercase letter is required" + "\n";
-        }
-
-        if(fields[i].value.match(/[^A-z0-9\!\@\#\$\%\^\&\*]/g)){
-            customValidityMessage += "Password contains illegal character" + "\n";
+        var field = fields[i];
+        if(field.value){
+            var fieldValue = field.value;
+            for(var validationText in validationSettings){
+                var validationTest = validationSettings[validationText];
+                if(validationTest(fieldValue)){
+                    customValidityMessage += validationText + "\n";
+                }
+            }
         }
         
-        fields[i].setCustomValidity(customValidityMessage);
+        field.setCustomValidity(customValidityMessage);
     }
     
     if(customValidityMessage){
