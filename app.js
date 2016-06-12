@@ -52,7 +52,7 @@ submit.onclick = function () {
     
     var customValidityMessage = '';
     if(firstPasswordInput.value !== secondPasswordInput.value){
-        customValidityMessage = "Passwords must match";
+        customValidityMessage = "Passwords must match" + "\n";
     }
 
     var fields = [firstPasswordInput, secondPasswordInput];
