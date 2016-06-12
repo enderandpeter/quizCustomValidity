@@ -25,26 +25,27 @@ var form = document.querySelector('form');
 You'll probably find this function useful...
  */  
 submit.onclick = function () {
+    var fieldValue;
     var validationSettings = {
-        "Password must be at least 16 characters": function(fieldValue){
+        "Password must be at least 16 characters": function(){
             return fieldValue.length < 16;
         },
-        "Password must less than 100 characters": function(fieldValue){
+        "Password must less than 100 characters": function(){
             return fieldValue.length > 100;
         },
-        "One of the required symbols is missing" : function(fieldValue){
+        "One of the required symbols is missing" : function(){
             return !fieldValue.match(/[\!\@\#\$\%\^\&\*]/g);
         },
-        "Password must contain a number" : function(fieldValue){
+        "Password must contain a number" : function(){
             return !fieldValue.match(/\d/g);
         },
-        "A lowercase letter is required" : function(fieldValue){
+        "A lowercase letter is required" : function(){
             return !fieldValue.match(/[a-z]/g);
         },
-        "An uppercase letter is required" : function(fieldValue){
+        "An uppercase letter is required" : function(){
             return !fieldValue.match(/[A-Z]/g);
         },
-        "Password contains illegal character" : function(fieldValue){
+        "Password contains illegal character" : function(){
             return fieldValue.match(/[^A-z0-9\!\@\#\$\%\^\&\*]/g);
         }
     };
@@ -59,7 +60,7 @@ submit.onclick = function () {
     for(var i in fields){        
         var field = fields[i];
         if(field.value){
-            var fieldValue = field.value;
+            fieldValue = field.value;
             for(var validationText in validationSettings){
                 var validationTest = validationSettings[validationText];
                 if(validationTest(fieldValue)){
