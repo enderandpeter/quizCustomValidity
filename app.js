@@ -57,10 +57,12 @@ submit.onclick = function () {
 
     var fields = [firstPasswordInput, secondPasswordInput];
 
+    // Loop through each passwor dfield
     for(var i in fields){        
         var field = fields[i];
         if(field.value){
             fieldValue = field.value;
+            // Set the validation text if the field value meets the condition
             for(var validationText in validationSettings){
                 var validationTest = validationSettings[validationText];
                 if(validationTest(fieldValue)){
@@ -72,6 +74,7 @@ submit.onclick = function () {
         field.setCustomValidity(customValidityMessage);
     }
     
+    // Return if a validation message was set.
     if(customValidityMessage){
         return;
     }
